@@ -47,6 +47,7 @@
     <Compile Include="Cartas\Carta.cs" />
     <Compile Include="Cartas\Naipe.cs" />
     <Compile Include="Cartas\Valor.cs" />
+    <Compile Include="Pilha.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

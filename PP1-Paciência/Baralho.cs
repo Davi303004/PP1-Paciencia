@@ -29,11 +29,31 @@ namespace PP1_Paciência
         {
             return cartas;
         }
-
+        public List<Carta> SepararCartas(int quantidade)
+        {
+            if (quantidade < 1 || quantidade > cartas.Count)
+            {
+                throw new ArgumentOutOfRangeException("Quantidade deve ser entre 1 e o número de cartas restantes no baralho.");
+            }
+            List<Carta> cartasRetiradas = cartas.Take(quantidade).ToList();
+            cartas.RemoveRange(0, quantidade);
+            return cartasRetiradas;
+        }
         public void Embaralhar()
         {
             Random random = new Random();
             cartas = cartas.OrderBy(c => random.Next()).ToList();
+        }
+        public void RemoverCarta(Carta carta)
+        {
+            if (cartas.Contains(carta))
+            {
+                cartas.Remove(carta);
+            }
+            else
+            {
+                throw new InvalidOperationException("Uma ou mais cartas não estão no baralho.");
+            }
         }
     }
 }
