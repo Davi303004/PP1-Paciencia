@@ -40,18 +40,29 @@ namespace PP1_Paciência
         }
         public bool MoverCartaPilha(int pilhaOrigem, int pilhaDestino)
         {
-            if(pilhaOrigem < 0 || pilhaOrigem >= pilhas.Count || pilhaDestino < 0 || pilhaDestino >= pilhas.Count)
+            if(pilhaOrigem < 0 || pilhaOrigem >= pilhas.Count || pilhaDestino < 0 || pilhaDestino >= pilhas.Count || pilhaOrigem == pilhaDestino)
             {
                 throw new ArgumentOutOfRangeException("Índices de pilha inválidos.");
             }
-            if (pilhas[pilhaOrigem - 1].EstaVazia() == true)
+            if (pilhas[pilhaOrigem - 1].EstaVazia())
             {
                 throw new InvalidOperationException("A pilha de origem está vazia.");
             }
             Carta cartaMovida = pilhas[pilhaOrigem - 1].RemoverCarta();
-            if (pilhas[pilhaDestino].EstaVazia() ||
-                (cartaMovida.GetValor() == pilhas[pilhaDestino - 1].MostrarTopo().GetValor() - 1 &&
-                 VerificarCor(cartaMovida.GetNaipe(), pilhas[pilhaDestino - 1].MostrarTopo().GetNaipe()) == true))
+            if (pilhas[pilhaDestino].EstaVazia())
+            {
+                if(cartaMovida.GetValor() == Valor.Rei)
+                {
+                    pilhas[pilhaDestino - 1].AdicionarCarta(cartaMovida);
+                    return true;
+                }
+                else
+                {
+                    pilhas[pilhaOrigem - 1].AdicionarCarta(cartaMovida); 
+                    return false;
+                }
+            }
+            if(cartaMovida.GetValor() == pilhas[pilhaDestino - 1].MostrarTopo().GetValor() - 1 && VerificarCor(cartaMovida.GetNaipe(), pilhas[pilhaDestino - 1].MostrarTopo().GetNaipe()))
             {
                 pilhas[pilhaDestino - 1].AdicionarCarta(cartaMovida);
                 return true;
