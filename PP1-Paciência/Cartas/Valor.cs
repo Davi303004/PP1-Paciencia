@@ -8,7 +8,7 @@ namespace PP1_Paciência.Cartas
 {
     enum Valor
     {
-        A,
+        As,
         Dois,
         Três,
         Quatro,

@@ -97,7 +97,7 @@ namespace PP1_Paciência
             Carta cartaMovida = pilhas[pilhaOrigem - 1].RemoverCarta();
             if(fundacoes[fundacaoDestino - 1].EstaVazia() == true)
             {
-                if(cartaMovida.GetValor() == Valor.A)
+                if(cartaMovida.GetValor() == Valor.As)
                 {
                     fundacoes[fundacaoDestino - 1].AdicionarCarta(cartaMovida);
                         return true;
