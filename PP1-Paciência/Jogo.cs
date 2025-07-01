@@ -38,7 +38,7 @@ namespace PP1_Paciência
             return (n1 == Naipe.Copas || n1 == Naipe.Ouros) && (n2 == Naipe.Paus || n2 == Naipe.Espadas) ||
                    (n1 == Naipe.Paus || n1 == Naipe.Espadas) && (n2 == Naipe.Copas || n2 == Naipe.Ouros);
         }
-        public bool MoverCarta(int pilhaOrigem, int pilhaDestino)
+        public bool MoverCartaPilha(int pilhaOrigem, int pilhaDestino)
         {
             if(pilhaOrigem < 0 || pilhaOrigem >= pilhas.Count || pilhaDestino < 0 || pilhaDestino >= pilhas.Count)
             {
@@ -62,6 +62,44 @@ namespace PP1_Paciência
                 return false;
             }
         }
+        public bool MoverCartaFundacao(int pilhaOrigem, int fundacaoDestino)
+        {
+            if(pilhaOrigem < 0 || pilhaOrigem >= pilhas.Count || fundacaoDestino < 0 || fundacaoDestino >= fundacoes.Count)
+            {
+                throw new ArgumentOutOfRangeException("Índices de pilha inválidos.");
+            }
+            if(pilhas[pilhaOrigem - 1].EstaVazia() == true)
+            {
+                throw new InvalidOperationException("A pilha de origem está vazia.");
+            }
+            Carta cartaMovida = pilhas[pilhaOrigem - 1].RemoverCarta();
+            if(fundacoes[fundacaoDestino - 1].EstaVazia() == true)
+            {
+                if(cartaMovida.GetValor() == Valor.A)
+                {
+                    fundacoes[fundacaoDestino - 1].AdicionarCarta(cartaMovida);
+                        return true;
+                }
+                else
+                {
+                    pilhas[pilhaOrigem - 1].AdicionarCarta(cartaMovida);
+                    return false;
+                }
+            }
+            else
+            {
+                if(cartaMovida.GetValor() == fundacoes[fundacaoDestino - 1].MostrarTopo().GetValor() - 1 && cartaMovida.GetNaipe() == fundacoes[fundacaoDestino - 1].MostrarTopo().GetNaipe())
+                {
+                    fundacoes[fundacoesDestino - 1].AdicionarCarta(cartaMovida);
+                        return true;
+                }
+                else
+                {
+                    pilhas[pilhaOrigem - 1].AdicionarCarta(cartaMovida);
+                    return false;
+                }
+            }
+        }
         public bool VerficarVitoria()
         {
             foreach (Pilha fundacao in fundacoes)
@@ -72,7 +110,7 @@ namespace PP1_Paciência
                 }
                 else 
                 {
-
+                    return true;
                 }
             }
         }
