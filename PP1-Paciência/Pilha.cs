@@ -50,10 +50,24 @@ namespace PP1_Paciência
         {
             return cartas;
         }
+        public void VirarCarta(int i)
+        {
+            if(cartas.Count < i)
+            {
+                throw new InvalidOperationException("Índice inválido.");
+            }
+            cartas[i - 1].Virar();
+        }
         public Carta MostrarTopo()
         {
             if (cartas.Count == 0)
+            {
                 throw new InvalidOperationException("A pilha está vazia.");
+            }   
+            if(cartas[Count - 1].Virada == false)
+            {
+                throw new InvalidOperationException("A carta não está virada.");
+            }
             return cartas[cartas.Count - 1];
         }
     }
