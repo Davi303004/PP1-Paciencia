@@ -36,6 +36,10 @@ namespace PP1_Paciência
                 throw new InvalidOperationException("A pilha está vazia.");
             Carta carta = cartas[cartas.Count - 1];
             cartas.RemoveAt(cartas.Count - 1);
+            if (cartas.Count > 0 && !cartas[cartas.Count - 1].Virada)
+            {
+                cartas[cartas.Count - 1].Virar();
+            }
             return carta;
         }
         public bool EstaVazia()
@@ -50,21 +54,13 @@ namespace PP1_Paciência
         {
             return cartas;
         }
-        public void VirarCarta(int i)
-        {
-            if(cartas.Count < i)
-            {
-                throw new InvalidOperationException("Índice inválido.");
-            }
-            cartas[i - 1].Virar();
-        }
         public Carta MostrarTopo()
         {
             if (cartas.Count == 0)
             {
                 throw new InvalidOperationException("A pilha está vazia.");
             }   
-            if(cartas[Count - 1].Virada == false)
+            if(cartas[cartas.Count - 1].Virada == false)
             {
                 throw new InvalidOperationException("A carta não está virada.");
             }

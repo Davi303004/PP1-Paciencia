@@ -58,6 +58,11 @@ namespace PP1_Paciência
                 }
                 else
                 {
+                    int indiceTopo = pilhas[pilhaOrigem - 1].ContarCartas() - 1;
+                    if (indiceTopo >= 0 && !pilhas[pilhaOrigem - 1].ObterCartas()[indiceTopo].Virada)
+                    {
+                        pilhas[pilhaOrigem - 1].ObterCartas()[indiceTopo].Virar();
+                    }
                     pilhas[pilhaOrigem - 1].AdicionarCarta(cartaMovida); 
                     return false;
                 }
@@ -69,6 +74,12 @@ namespace PP1_Paciência
             }
             else
             {
+                int indiceTopo = pilhas[pilhaOrigem - 1].ContarCartas() - 1;
+                if (indiceTopo >= 0 && !pilhas[pilhaOrigem - 1].ObterCartas()[indiceTopo].Virada)
+                {
+                    pilhas[pilhaOrigem - 1].ObterCartas()[indiceTopo].Virar();
+                }
+                pilhas[pilhaOrigem - 1].AdicionarCarta(cartaMovida);
                 pilhas[pilhaOrigem - 1].AdicionarCarta(cartaMovida); 
                 return false;
             }
@@ -101,7 +112,7 @@ namespace PP1_Paciência
             {
                 if(cartaMovida.GetValor() == fundacoes[fundacaoDestino - 1].MostrarTopo().GetValor() - 1 && cartaMovida.GetNaipe() == fundacoes[fundacaoDestino - 1].MostrarTopo().GetNaipe())
                 {
-                    fundacoes[fundacoesDestino - 1].AdicionarCarta(cartaMovida);
+                    fundacoes[fundacaoDestino - 1].AdicionarCarta(cartaMovida);
                         return true;
                 }
                 else
@@ -113,16 +124,25 @@ namespace PP1_Paciência
         }
         public bool VerficarVitoria()
         {
+            List<bool> fundacoesCheias = new List<bool>();
             foreach (Pilha fundacao in fundacoes)
             {
                 if (fundacao.ContarCartas() < 13)
                 {
-                    return false;
+                    fundacoesCheias.Add(false);
                 }
                 else 
                 {
-                    return true;
+                    fundacoesCheias.Add(true);
                 }
+            }
+            if (fundacoesCheias.Contains(false))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
             }
         }
     }
