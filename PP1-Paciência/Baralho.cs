@@ -44,15 +44,25 @@ namespace PP1_Paciência
             Random random = new Random();
             cartas = cartas.OrderBy(c => random.Next()).ToList();
         }
-        public void RemoverCarta(Carta carta)
+        public Carta PegarUltimaCarta()
         {
-            if (cartas.Contains(carta))
+            if (cartas.Count == 0)
             {
-                cartas.Remove(carta);
+                throw new InvalidOperationException("O baralho está vazio.");
+            }
+            Carta carta = cartas[cartas.Count - 1];
+            cartas.RemoveAt(cartas.Count - 1);
+            return carta;
+        }
+        public void AdicionarCarta(Carta carta)
+        {
+            if(cartas.Contain(carta))
+            {
+                throw new InvalidOperationException("A carta já se encontra no baralho")
             }
             else
             {
-                throw new InvalidOperationException("Uma ou mais cartas não estão no baralho.");
+                cartas.Add(carta);
             }
         }
     }
