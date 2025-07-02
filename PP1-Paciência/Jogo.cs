@@ -10,6 +10,7 @@ namespace PP1_Paciência
     class Jogo
     {
         private Baralho baralho;
+        private Pilha monte;
         private List<Pilha> pilhas;
         private List<Pilha> fundacoes;
 
@@ -19,6 +20,7 @@ namespace PP1_Paciência
             baralho.Embaralhar();
             pilhas = new List<Pilha>();
             fundacoes = new List<Pilha>();
+            monte = new Pilha();
 
             for (int i = 1; i <= 7; i++)
             {
@@ -104,6 +106,11 @@ namespace PP1_Paciência
                 }
                 else
                 {
+                     int indiceTopo = pilhas[pilhaOrigem - 1].ContarCartas() - 1;
+                    if (indiceTopo >= 0 && !pilhas[pilhaOrigem - 1].ObterCartas()[indiceTopo].Virada)
+                    {
+                        pilhas[pilhaOrigem - 1].ObterCartas()[indiceTopo].Virar();
+                    }
                     pilhas[pilhaOrigem - 1].AdicionarCarta(cartaMovida);
                     return false;
                 }
@@ -117,9 +124,36 @@ namespace PP1_Paciência
                 }
                 else
                 {
+                     int indiceTopo = pilhas[pilhaOrigem - 1].ContarCartas() - 1;
+                    if (indiceTopo >= 0 && !pilhas[pilhaOrigem - 1].ObterCartas()[indiceTopo].Virada)
+                    {
+                        pilhas[pilhaOrigem - 1].ObterCartas()[indiceTopo].Virar();
+                    }
                     pilhas[pilhaOrigem - 1].AdicionarCarta(cartaMovida);
                     return false;
                 }
+            }
+        }
+        public void PegarCartaBaralho()
+        {
+            Carta cartaRetirada = baralho.PegarUltimaCarta();
+            cartaRetirada.Virar();
+            monte.AdicionarCarta(cartaRetirada);
+        }
+        public void VoltarBaralho()
+        {
+            if(baralho.ObterCartas().Count == 0)
+            {
+                for(int i = monte.ObterCartas().Count - 1; i >= 0; i--)
+                {
+                    Carta ultimaCarta = monte.ObterCartas()[i];
+                    ultimaCarta.Virar();
+                    baralho.AdicionarCarta(ultimaCarta);
+                }
+            }
+            else
+            {
+                throw new invalidOperationException("O baralho não está vazio")
             }
         }
         public bool VerficarVitoria()
