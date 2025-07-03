@@ -24,8 +24,9 @@ namespace PP1_Paciência
 
             for (int i = 1; i <= 7; i++)
             {
-                List<Carta> cartasDaPilha = baralho.SepararCartas(i);
                 Pilha novaPilha = new Pilha();
+                List<Carta> cartasDaPilha = baralho.SepararCartas(i);
+                cartasDaPilha[cartasDaPilha.Count - 1].Virar();
                 novaPilha.AdicionarCarta(cartasDaPilha);
                 pilhas.Add(novaPilha);
             }
@@ -34,6 +35,22 @@ namespace PP1_Paciência
             {
                 fundacoes.Add(new Pilha());
             }
+        }
+        public List<Pilha> ObterPilhas()
+        {
+            return pilhas;
+        }
+        public List<Pilha> ObterFundacoes()
+        {
+            return fundacoes;
+        }
+        public Pilha ObterMonte()
+        {
+            return monte;
+        }
+        public int ContarCartasBaralho()
+        {
+            return baralho.ObterCartas().Count;
         }
         private bool VerificarCor(Naipe n1, Naipe n2)
         {
@@ -153,7 +170,43 @@ namespace PP1_Paciência
             }
             else
             {
-                throw new invalidOperationException("O baralho não está vazio")
+                throw new InvalidOperationException("O baralho não está vazio");
+            }
+        }
+        public bool PegarCartaMonte(int pilhaDestino)
+        {
+
+            if (pilhaDestino < 0 || pilhaDestino >= pilhas.Count)
+            {
+                throw new ArgumentOutOfRangeException("Índice de pilha inválido.");
+            }
+            if (monte.EstaVazia())
+            {
+                throw new InvalidOperationException("O monte está vazio.");
+            }
+            Carta cartaMovida = monte.RemoverCarta();
+            if (pilhas[pilhaDestino].EstaVazia())
+            {
+                if (cartaMovida.GetValor() == Valor.Rei)
+                {
+                    pilhas[pilhaDestino].AdicionarCarta(cartaMovida);
+                    return true;
+                }
+                else
+                {
+                    monte.AdicionarCarta(cartaMovida);
+                    return false;
+                }
+            }
+            if (cartaMovida.GetValor() == pilhas[pilhaDestino].MostrarTopo().GetValor() - 1 && VerificarCor(cartaMovida.GetNaipe(), pilhas[pilhaDestino].MostrarTopo().GetNaipe()))
+            {
+                pilhas[pilhaDestino].AdicionarCarta(cartaMovida);
+                return true;
+            }
+            else
+            {
+                monte.AdicionarCarta(cartaMovida);
+                return false;
             }
         }
         public bool VerficarVitoria()

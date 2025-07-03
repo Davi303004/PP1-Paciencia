@@ -56,9 +56,9 @@ namespace PP1_Paciência
         }
         public void AdicionarCarta(Carta carta)
         {
-            if(cartas.Contain(carta))
+            if(cartas.Contains(carta))
             {
-                throw new InvalidOperationException("A carta já se encontra no baralho")
+                throw new InvalidOperationException("A carta já se encontra no baralho");
             }
             else
             {

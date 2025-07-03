@@ -58,7 +58,7 @@ namespace PP1_Paciência
         {
             if (cartas.Count == 0)
             {
-                throw new InvalidOperationException("A pilha está vazia.");
+                return null;
             }   
             if(cartas[cartas.Count - 1].Virada == false)
             {
