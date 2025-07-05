@@ -52,7 +52,7 @@ namespace PP1_Paciência
                                 if (paciencia.ObterMonte().EstaVazia())
                                 {
                                     Console.WriteLine("[  ]");
-                                    Console.WriteLine("\t");
+                                    Console.WriteLine("\n");
                                 }
                                 else
                                 {
@@ -66,38 +66,167 @@ namespace PP1_Paciência
                                     Console.Write(topo != null ? $"{topo.GetValor()}{topo.GetNaipe()}".PadRight(10) : "[  ]".PadRight(10));
                                 }
                                 Console.WriteLine("\n");
-                                int maxAltura = paciencia.ObterPilhas().Max(p => p.ContarCartas());
-                                for (int i = 0; i < maxAltura; i++)
+                                const int COL_WIDTH = 18;
+                                var pilhas = paciencia.ObterPilhas();
+                                int numPilhas = pilhas.Count;
+                                int maxAltura = pilhas.Max(p => p.ContarCartas());
+
+                                for (int p = 0; p < numPilhas; p++)
                                 {
-                                    for (int j = 0; j < paciencia.ObterPilhas().Count; j++)
+                                    string header = $"P{p + 1}";
+                                    Console.Write(header.PadRight(COL_WIDTH));
+                                    Console.Write("| ");
+                                }
+                                Console.WriteLine();
+
+                                for (int linha = 0; linha < maxAltura; linha++)
+                                {
+                                    for (int p = 0; p < numPilhas; p++)
                                     {
-                                        if (i < paciencia.ObterPilhas()[j].ContarCartas())
+                                        var cartasPilha = pilhas[p].ObterCartas();
+                                        string texto;
+
+                                        if (linha < cartasPilha.Count)
                                         {
-                                            var cartasPilha = paciencia.ObterPilhas()[j].ObterCartas();
-                                            Carta carta = cartasPilha.ElementAtOrDefault(i);
-                                            if (carta == null)
-                                            {
-                                                Console.Write("\t");
-                                                continue;
-                                            }
-                                            else if (carta.Virada) 
-                                            {
-                                                string textoCarta = ($"{carta.GetValor()} de {carta.GetNaipe()}");
-                                                Console.Write(textoCarta + "\t");
-                                            }
-                                            else
-                                            {
-                                                Console.Write(" --- \t");
-                                            }
+                                            var carta = cartasPilha[linha];
+                                            texto = carta.Virada
+                                                ? $"{carta.GetValor()}{carta.GetNaipe()}"
+                                                : "---";
                                         }
                                         else
                                         {
-                                            Console.Write(" \t");
+                                            texto = "";
                                         }
+
+                                        
+                                        Console.Write(texto.PadRight(COL_WIDTH));
+                                        Console.Write("| ");
                                     }
+
                                     Console.WriteLine();
                                 }
-                                
+                                Console.WriteLine("== MENU DE OPÇÕES ==");
+                                Console.WriteLine("1 - Mover uma Carta para outra Pilha");
+                                Console.WriteLine("2 - Mover uma carta do Monte para Pilha");
+                                Console.WriteLine("3 - Mover uma carta do Monte para a Fundação");
+                                Console.WriteLine("4 - Mover uma carta para a Fundação");
+                                Console.WriteLine("5 - Comprar do Baralho");
+                                Console.WriteLine("6 - Voltar o Baralho");
+                                Console.WriteLine("7 - Sair da Partida");
+                                int opcaoJogo = int.Parse(Console.ReadLine());
+                                if (opcaoJogo < 1 || opcaoJogo > 7)
+                                {
+                                    Console.WriteLine("Opção inválida. Tente novamente.");
+                                    continue;
+                                }
+                                else if (opcaoJogo == 7)
+                                {
+                                    Console.Clear();
+                                    Console.WriteLine("Saindo da partida...");
+                                    break;
+                                }
+                                else if (opcaoJogo == 1)
+                                {
+                                    Console.WriteLine("Insira a Posição da Pilha de Origem");
+                                    int pilhaOrigem = int.Parse(Console.ReadLine());
+                                    Console.WriteLine("Insira a Posição da Pilha de Destino");
+                                    int pilhaDestino = int.Parse(Console.ReadLine());
+                                    Console.WriteLine("Quantas Cartas Quer Mover?");
+                                    int range = int.Parse(Console.ReadLine());
+                                    if (range < 1 || range > paciencia.ObterPilhas()[pilhaOrigem - 1].ContarCartas())
+                                    {
+                                        Console.WriteLine("Quantidade inválida. Tente novamente.");
+                                        continue;
+                                    }
+                                    else if(range == 1)
+                                    {
+                                        bool movimentoValido = paciencia.MoverCartaPilha(pilhaOrigem, pilhaDestino);
+                                        if (movimentoValido)
+                                        {
+                                            Console.Clear();
+                                            Console.WriteLine("Movimento realizado com sucesso!");
+                                        }
+                                        else
+                                        {
+                                            Console.Clear();
+                                            Console.WriteLine("Movimento inválido. Tente novamente.");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        bool movimentoValido = paciencia.MoverCartaPilha(pilhaOrigem, pilhaDestino, range);
+                                        if(movimentoValido)
+                                        {
+                                            Console.Clear();
+                                            Console.WriteLine("Movimento realizado com sucesso!");
+                                        }
+                                        else
+                                        {
+                                            Console.Clear();
+                                            Console.WriteLine("Movimento inválido. Tente novamente.");
+                                        }
+                                    }  
+                                }
+                                else if(opcaoJogo == 2) 
+                                {
+                                    Console.WriteLine("insira a Posição da Pilha de Destino");
+                                    int pilhaDestino = int.Parse(Console.ReadLine());
+                                    bool movimentoValido = paciencia.PegarCartaMonte(pilhaDestino);
+                                    if (movimentoValido)
+                                    {
+                                        Console.Clear();
+                                        Console.WriteLine("Carta movida do monte para a pilha com sucesso!");
+                                    }
+                                    else
+                                    {
+                                        Console.Clear();
+                                        Console.WriteLine("Movimento inválido. Tente novamente.");
+                                    }
+                                }
+                                else if(opcaoJogo == 3)
+                                {
+                                    Console.WriteLine("Insira a Posição da Fundação de Destino");
+                                    int fundacaoDestino = int.Parse(Console.ReadLine());
+                                    bool movimentoValido = paciencia.PegarCartaMonteFundacao(fundacaoDestino);
+                                    if (movimentoValido)
+                                    {
+                                        Console.Clear();
+                                        Console.WriteLine("Carta movida do monte para a fundação com sucesso!");
+                                    }
+                                    else
+                                    {
+                                        Console.Clear();
+                                        Console.WriteLine("Movimento inválido. Tente novamente.");
+                                    }
+                                }
+                                else if (opcaoJogo == 4)
+                                {
+                                    Console.WriteLine("Insira a Posição da Pilha de Origem");
+                                    int pilhaDestino = int.Parse(Console.ReadLine());
+                                    Console.WriteLine("Insira a Posição da Fundação de Destino");
+                                    int fundacaoDestino = int.Parse(Console.ReadLine());
+                                    bool movimentoValido = paciencia.MoverCartaFundacao(pilhaDestino, fundacaoDestino);
+                                    if (movimentoValido)
+                                    {
+                                        Console.Clear();
+                                        Console.WriteLine("Carta movida para a fundação com sucesso!");
+                                    }
+                                    else
+                                    {
+                                        Console.Clear();
+                                        Console.WriteLine("Movimento inválido. Tente novamente.");
+                                    }
+                                }
+                                else if (opcaoJogo == 5)
+                                {
+                                    Console.Clear();
+                                    paciencia.PegarCartaBaralho();
+                                }
+                                else if (opcaoJogo == 6)
+                                {
+                                    Console.Clear();
+                                    paciencia.VoltarBaralho();
+                                }
                             }
                             catch (Exception ex)
                             {
