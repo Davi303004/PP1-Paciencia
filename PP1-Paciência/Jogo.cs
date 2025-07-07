@@ -73,7 +73,7 @@ namespace PP1_Paciência
             }
 
             int indiceInicial = origem.ContarCartas() - quantidadeCartas;
-            var cartasMovidas = origem.ObterCartas().GetRange(indiceInicial, quantidadeCartas);
+            var cartasMovidas = origem.RemoverCarta(quantidadeCartas);
 
             var cartaTopoMovida = cartasMovidas[0];
             if (destino.EstaVazia())
@@ -122,11 +122,6 @@ namespace PP1_Paciência
                 }
                 else
                 {
-                    int indiceTopo = pilhas[pilhaOrigem - 1].ContarCartas() - 1;
-                    if (indiceTopo >= 0 && !pilhas[pilhaOrigem - 1].ObterCartas()[indiceTopo].Virada)
-                    {
-                        pilhas[pilhaOrigem - 1].ObterCartas()[indiceTopo].Virar();
-                    }
                     pilhas[pilhaOrigem - 1].AdicionarCarta(cartaMovida); 
                     return false;
                 }
@@ -138,11 +133,6 @@ namespace PP1_Paciência
             }
             else
             {
-                int indiceTopo = pilhas[pilhaOrigem - 1].ContarCartas() - 1;
-                if (indiceTopo >= 0 && !pilhas[pilhaOrigem - 1].ObterCartas()[indiceTopo].Virada)
-                {
-                    pilhas[pilhaOrigem - 1].ObterCartas()[indiceTopo].Virar();
-                }
                 pilhas[pilhaOrigem - 1].AdicionarCarta(cartaMovida); 
                 return false;
             }
@@ -167,12 +157,6 @@ namespace PP1_Paciência
                 }
                 else
                 {
-                     int indiceTopo = pilhas[pilhaOrigem - 1].ContarCartas() - 1;
-                    if (indiceTopo >= 0 && !pilhas[pilhaOrigem - 1].ObterCartas()[indiceTopo].Virada)
-                    {
-                        pilhas[pilhaOrigem - 1].ObterCartas()[indiceTopo].Virar();
-                    }
-                    pilhas[pilhaOrigem - 1].AdicionarCarta(cartaMovida);
                     return false;
                 }
             }
@@ -185,12 +169,6 @@ namespace PP1_Paciência
                 }
                 else
                 {
-                     int indiceTopo = pilhas[pilhaOrigem - 1].ContarCartas() - 1;
-                    if (indiceTopo >= 0 && !pilhas[pilhaOrigem - 1].ObterCartas()[indiceTopo].Virada)
-                    {
-                        pilhas[pilhaOrigem - 1].ObterCartas()[indiceTopo].Virar();
-                    }
-                    pilhas[pilhaOrigem - 1].AdicionarCarta(cartaMovida);
                     return false;
                 }
             }
