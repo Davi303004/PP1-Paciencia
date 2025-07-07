@@ -42,6 +42,18 @@ namespace PP1_Paciência
             }
             return carta;
         }
+        public List<Carta> RemoverCarta(int range)
+        {
+            if (range < 0 || range > cartas.Count)
+                throw new ArgumentOutOfRangeException("Alcance de Cartas Inválido.");
+            List<Carta> cartasRemovidas = cartas.GetRange(cartas.Count - range, range);
+            cartas.RemoveRange(range, cartas.Count - range);
+            if (cartas.Count > 0 && !cartas[cartas.Count - 1].Virada)
+            {
+                cartas[cartas.Count - 1].Virar();
+            }
+            return cartasRemovidas;
+        }
         public bool EstaVazia()
         {
             return cartas.Count == 0;

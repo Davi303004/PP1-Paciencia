@@ -57,59 +57,52 @@ namespace PP1_Paciência
             return (n1 == Naipe.Copas || n1 == Naipe.Ouros) && (n2 == Naipe.Paus || n2 == Naipe.Espadas) ||
                    (n1 == Naipe.Paus || n1 == Naipe.Espadas) && (n2 == Naipe.Copas || n2 == Naipe.Ouros);
         }
-        public bool MoverCartaPilha(int pilhaOrigem, int pilhaDestino, int range) 
+        public bool MoverCartaPilha(int pilhaOrigem, int pilhaDestino, int quantidadeCartas)
         {
-            if (pilhaOrigem < 0 || pilhaOrigem > pilhas.Count || pilhaDestino < 0 || pilhaDestino > pilhas.Count || pilhaOrigem == pilhaDestino)
+            if (pilhaOrigem < 1 || pilhaOrigem > pilhas.Count || pilhaDestino < 1 || pilhaDestino > pilhas.Count || pilhaOrigem == pilhaDestino)
             {
                 throw new ArgumentOutOfRangeException("Índices de pilha inválidos.");
             }
-            if (pilhas[pilhaOrigem - 1].ContarCartas() < range)
+
+            var origem = pilhas[pilhaOrigem - 1];
+            var destino = pilhas[pilhaDestino - 1];
+
+            if (origem.ContarCartas() < quantidadeCartas)
             {
                 throw new InvalidOperationException("A pilha de origem não possui cartas suficientes.");
             }
-            List<Carta> cartasMovidas = pilhas[pilhaOrigem - 1].ObterCartas().GetRange(pilhas[pilhaOrigem - 1].ContarCartas() - range, range);
-            if (pilhas[pilhaDestino - 1].EstaVazia())
+
+            int indiceInicial = origem.ContarCartas() - quantidadeCartas + 1;
+            List<Carta> cartasMovidas = origem.ObterCartas().GetRange(indiceInicial, quantidadeCartas);
+
+            if (destino.EstaVazia())
             {
-                if (cartasMovidas[0].GetValor() == Valor.Rei)
+                if (cartasMovidas[0].GetValor() != Valor.Rei)
                 {
-                    pilhas[pilhaDestino - 1].AdicionarCarta(cartasMovidas);
-                    foreach (Carta carta in cartasMovidas)
-                    {
-                        pilhas[pilhaOrigem - 1].RemoverCarta(); 
-                    }
-                    return true;
-                }
-                else
-                {
-                    int indiceTopo = pilhas[pilhaOrigem - 1].ContarCartas() - 1;
-                    if (indiceTopo >= 0 && !pilhas[pilhaOrigem - 1].ObterCartas()[indiceTopo].Virada)
-                    {
-                        pilhas[pilhaOrigem - 1].ObterCartas()[indiceTopo].Virar();
-                    }
-                    pilhas[pilhaOrigem - 1].AdicionarCarta(cartasMovidas);
                     return false;
                 }
             }
-            Carta topoDestino = pilhas[pilhaDestino - 1].MostrarTopo();
-            if (cartasMovidas[0].GetValor() == topoDestino.GetValor() - 1 && VerificarCor(cartasMovidas[0].GetNaipe(), topoDestino.GetNaipe()))
-            {
-                pilhas[pilhaDestino - 1].AdicionarCarta(cartasMovidas);
-                foreach (Carta carta in cartasMovidas)
-                {
-                    pilhas[pilhaOrigem - 1].RemoverCarta();
-                }
-                return true;
-            }
             else
             {
-                int indiceTopo = pilhas[pilhaOrigem - 1].ContarCartas() - 1;
-                if (indiceTopo >= 0 && !pilhas[pilhaOrigem - 1].ObterCartas()[indiceTopo].Virada)
+                Carta topo = destino.MostrarTopo();
+                if (cartasMovidas[0].GetValor() != topo.GetValor() - 1 || !VerificarCor(cartasMovidas[0].GetNaipe(), topo.GetNaipe()))
                 {
-                    pilhas[pilhaOrigem - 1].ObterCartas()[indiceTopo].Virar();
+                    return false;
                 }
-                pilhas[pilhaOrigem - 1].AdicionarCarta(cartasMovidas);
-                return false;
             }
+
+            origem.RemoverCarta(quantidadeCartas);
+            destino.AdicionarCarta(cartasMovidas);
+            if (!origem.EstaVazia())
+            {
+                var novaTopo = origem.MostrarTopo();
+                if (!novaTopo.Virada)
+                {
+                    novaTopo.Virar();
+                }
+            }
+
+            return true;
         }
         public bool MoverCartaPilha(int pilhaOrigem, int pilhaDestino)
         {
@@ -122,7 +115,7 @@ namespace PP1_Paciência
                 throw new InvalidOperationException("A pilha de origem está vazia.");
             }
             Carta cartaMovida = pilhas[pilhaOrigem - 1].RemoverCarta();
-            if (pilhas[pilhaDestino].EstaVazia())
+            if (pilhas[pilhaDestino - 1].EstaVazia())
             {
                 if(cartaMovida.GetValor() == Valor.Rei)
                 {
@@ -173,7 +166,7 @@ namespace PP1_Paciência
                 if(cartaMovida.GetValor() == Valor.As)
                 {
                     fundacoes[fundacaoDestino - 1].AdicionarCarta(cartaMovida);
-                        return true;
+                    return true;
                 }
                 else
                 {
@@ -188,10 +181,10 @@ namespace PP1_Paciência
             }
             else
             {
-                if(cartaMovida.GetValor() == fundacoes[fundacaoDestino - 1].MostrarTopo().GetValor() - 1 && cartaMovida.GetNaipe() == fundacoes[fundacaoDestino - 1].MostrarTopo().GetNaipe())
+                if(cartaMovida.GetValor() == fundacoes[fundacaoDestino - 1].MostrarTopo().GetValor() + 1 && cartaMovida.GetNaipe() == fundacoes[fundacaoDestino - 1].MostrarTopo().GetNaipe())
                 {
                     fundacoes[fundacaoDestino - 1].AdicionarCarta(cartaMovida);
-                        return true;
+                    return true;
                 }
                 else
                 {
@@ -220,6 +213,7 @@ namespace PP1_Paciência
                     Carta ultimaCarta = monte.ObterCartas()[i];
                     ultimaCarta.Virar();
                     baralho.AdicionarCarta(ultimaCarta);
+                    monte.RemoverCarta();
                 }
             }
             else
@@ -287,7 +281,7 @@ namespace PP1_Paciência
                     return false;
                 }
             }
-            if (cartaMovida.GetValor() == fundacoes[fundacaoDestino - 1].MostrarTopo().GetValor() - 1 && cartaMovida.GetNaipe() == fundacoes[fundacaoDestino - 1].MostrarTopo().GetNaipe())
+            if (cartaMovida.GetValor() == fundacoes[fundacaoDestino - 1].MostrarTopo().GetValor() + 1 && cartaMovida.GetNaipe() == fundacoes[fundacaoDestino - 1].MostrarTopo().GetNaipe())
             {
                 fundacoes[fundacaoDestino - 1].AdicionarCarta(cartaMovida);
                 return true;
