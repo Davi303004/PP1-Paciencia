@@ -72,20 +72,20 @@ namespace PP1_Paciência
                 throw new InvalidOperationException("A pilha de origem não possui cartas suficientes.");
             }
 
-            int indiceInicial = origem.ContarCartas() - quantidadeCartas + 1;
-            List<Carta> cartasMovidas = origem.ObterCartas().GetRange(indiceInicial, quantidadeCartas);
+            int indiceInicial = origem.ContarCartas() - quantidadeCartas;
+            var cartasMovidas = origem.ObterCartas().GetRange(indiceInicial, quantidadeCartas);
 
+            var cartaTopoMovida = cartasMovidas[0];
             if (destino.EstaVazia())
             {
-                if (cartasMovidas[0].GetValor() != Valor.Rei)
-                {
-                    return false;
-                }
+                if (cartaTopoMovida.GetValor() != Valor.Rei) 
+                return false;
             }
             else
             {
-                Carta topo = destino.MostrarTopo();
-                if (cartasMovidas[0].GetValor() != topo.GetValor() - 1 || !VerificarCor(cartasMovidas[0].GetNaipe(), topo.GetNaipe()))
+                var cartaTopoDestino = destino.MostrarTopo();
+                if (cartaTopoMovida.GetValor() != cartaTopoDestino.GetValor() - 1 ||
+                    !VerificarCor(cartaTopoMovida.GetNaipe(), cartaTopoDestino.GetNaipe()))
                 {
                     return false;
                 }
@@ -93,13 +93,11 @@ namespace PP1_Paciência
 
             origem.RemoverCarta(quantidadeCartas);
             destino.AdicionarCarta(cartasMovidas);
+
             if (!origem.EstaVazia())
             {
                 var novaTopo = origem.MostrarTopo();
-                if (!novaTopo.Virada)
-                {
-                    novaTopo.Virar();
-                }
+                if (!novaTopo.Virada) novaTopo.Virar();
             }
 
             return true;
@@ -145,7 +143,6 @@ namespace PP1_Paciência
                 {
                     pilhas[pilhaOrigem - 1].ObterCartas()[indiceTopo].Virar();
                 }
-                pilhas[pilhaOrigem - 1].AdicionarCarta(cartaMovida);
                 pilhas[pilhaOrigem - 1].AdicionarCarta(cartaMovida); 
                 return false;
             }
