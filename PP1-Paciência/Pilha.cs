@@ -47,7 +47,7 @@ namespace PP1_Paciência
             if (range < 0 || range > cartas.Count)
                 throw new ArgumentOutOfRangeException("Alcance de Cartas Inválido.");
             List<Carta> cartasRemovidas = cartas.GetRange(cartas.Count - range, range);
-            cartas.RemoveRange(range, cartas.Count - range);
+            cartas.RemoveRange(cartas.Count - range, range);
             if (cartas.Count > 0 && !cartas[cartas.Count - 1].Virada)
             {
                 cartas[cartas.Count - 1].Virar();

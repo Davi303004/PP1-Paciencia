@@ -37,6 +37,7 @@ namespace PP1_Paciência
                         {
                             try 
                             {
+                                const int COL_WIDTH = 18;
                                 Console.WriteLine("BARALHO");
                                 if (paciencia.ContarCartasBaralho() == 0)
                                 {
@@ -57,16 +58,15 @@ namespace PP1_Paciência
                                 else
                                 {
                                     Carta cartaMonte = paciencia.ObterMonte().MostrarTopo();
-                                    Console.WriteLine($"[Carta do monte: {cartaMonte.GetValor()} de {cartaMonte.GetNaipe()}]");
-                                    Console.WriteLine("\t");
+                                    Console.WriteLine($"[Carta do monte: {cartaMonte.GetValor()}{cartaMonte.GetNaipe()}]");
+                                    
                                 }
                                 foreach (var fundacao in paciencia.ObterFundacoes())
                                 {
                                     var topo = fundacao.MostrarTopo();
-                                    Console.Write(topo != null ? $"{topo.GetValor()}{topo.GetNaipe()}".PadRight(10) : "[  ]".PadRight(10));
+                                    Console.Write(topo != null ? $"| [{topo.GetValor()}{topo.GetNaipe()}] |".PadRight(COL_WIDTH) : "| [  ] |".PadRight(10));
                                 }
                                 Console.WriteLine("\n");
-                                const int COL_WIDTH = 18;
                                 var pilhas = paciencia.ObterPilhas();
                                 int numPilhas = pilhas.Count;
                                 int maxAltura = pilhas.Max(p => p.ContarCartas());

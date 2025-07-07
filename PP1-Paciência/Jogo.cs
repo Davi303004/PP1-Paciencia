@@ -90,8 +90,6 @@ namespace PP1_Paciência
                     return false;
                 }
             }
-
-            origem.RemoverCarta(quantidadeCartas);
             destino.AdicionarCarta(cartasMovidas);
 
             if (!origem.EstaVazia())
