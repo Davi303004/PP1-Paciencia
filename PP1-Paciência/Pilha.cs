@@ -63,11 +63,7 @@ namespace PP1_Paciência
             if (cartas.Count == 0)
             {
                 return null;
-            }   
-            if(cartas[cartas.Count - 1].Virada == false)
-            {
-                throw new InvalidOperationException("A carta não está virada.");
-            }
+            } 
             return cartas[cartas.Count - 1];
         }
     }
