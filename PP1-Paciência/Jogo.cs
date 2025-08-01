@@ -110,28 +110,30 @@ namespace PP1_Paciência
             {
                 throw new InvalidOperationException("A pilha de origem está vazia.");
             }
-            Carta cartaMovida = pilhas[pilhaOrigem - 1].RemoverCarta();
+            Carta cartaMovida = pilhas[pilhaOrigem - 1].MostrarTopo();
             if (pilhas[pilhaDestino - 1].EstaVazia())
             {
                 if(cartaMovida.GetValor() == Valor.Rei)
                 {
+                    pilhas[pilhaOrigem - 1].RemoverCarta();
+                    pilhas[pilhaOrigem - 1].MostrarTopo().Virar();
                     pilhas[pilhaDestino - 1].AdicionarCarta(cartaMovida);
                     return true;
                 }
                 else
                 {
-                    pilhas[pilhaOrigem - 1].AdicionarCarta(cartaMovida); 
                     return false;
                 }
             }
             if(cartaMovida.GetValor() == pilhas[pilhaDestino - 1].MostrarTopo().GetValor() - 1 && VerificarCor(cartaMovida.GetNaipe(), pilhas[pilhaDestino - 1].MostrarTopo().GetNaipe()))
             {
+                pilhas[pilhaOrigem - 1].RemoverCarta();
+                pilhas[pilhaOrigem - 1].MostrarTopo().Virar();
                 pilhas[pilhaDestino - 1].AdicionarCarta(cartaMovida);
                 return true;
             }
             else
-            {
-                pilhas[pilhaOrigem - 1].AdicionarCarta(cartaMovida); 
+            { 
                 return false;
             }
         }
@@ -145,7 +147,7 @@ namespace PP1_Paciência
             {
                 throw new InvalidOperationException("A pilha de origem está vazia.");
             }
-            Carta cartaMovida = pilhas[pilhaOrigem - 1].RemoverCarta();
+            Carta cartaMovida = pilhas[pilhaOrigem - 1].MostrarTopo();
             if(fundacoes[fundacaoDestino - 1].EstaVazia() == true)
             {
                 if(cartaMovida.GetValor() == Valor.As)
