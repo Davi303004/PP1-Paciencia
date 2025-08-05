@@ -118,9 +118,12 @@ namespace PP1_Paciência
                 if(cartaMovida.GetValor() == Valor.Rei)
                 {
                     pilhas[pilhaOrigem - 1].RemoverCarta();
-                    if (!pilhas[pilhaOrigem - 1].MostrarTopo().Virada && !pilhas[pilhaOrigem - 1].EstaVazia())
+                    if (!pilhas[pilhaOrigem - 1].EstaVazia())
                     {
-                        pilhas[pilhaOrigem - 1].MostrarTopo().Virar();
+                        if (!pilhas[pilhaOrigem - 1].MostrarTopo().Virada)
+                        {
+                            pilhas[pilhaOrigem - 1].MostrarTopo().Virar();
+                        }
                     }
                     pilhas[pilhaDestino - 1].AdicionarCarta(cartaMovida);
                     return true;
@@ -133,9 +136,12 @@ namespace PP1_Paciência
             if(cartaMovida.GetValor() == pilhas[pilhaDestino - 1].MostrarTopo().GetValor() - 1 && VerificarCor(cartaMovida.GetNaipe(), pilhas[pilhaDestino - 1].MostrarTopo().GetNaipe()))
             {
                 pilhas[pilhaOrigem - 1].RemoverCarta();
-                if (!pilhas[pilhaOrigem - 1].MostrarTopo().Virada && !pilhas[pilhaOrigem - 1].EstaVazia())
+                if (!pilhas[pilhaOrigem - 1].EstaVazia())
                 {
-                    pilhas[pilhaOrigem - 1].MostrarTopo().Virar();
+                    if (!pilhas[pilhaOrigem - 1].MostrarTopo().Virada)
+                    {
+                        pilhas[pilhaOrigem - 1].MostrarTopo().Virar();
+                    }
                 }
                 pilhas[pilhaDestino - 1].AdicionarCarta(cartaMovida);
                 return true;
@@ -161,10 +167,12 @@ namespace PP1_Paciência
                 if(cartaMovida.GetValor() == Valor.As)
                 {
                     pilhas[pilhaOrigem - 1].RemoverCarta();
-                    
-                    if (!pilhas[pilhaOrigem - 1].MostrarTopo().Virada && !pilhas[pilhaOrigem - 1].EstaVazia())
+                    if (!pilhas[pilhaOrigem - 1].EstaVazia())
                     {
-                        pilhas[pilhaOrigem - 1].MostrarTopo().Virar();
+                        if (!pilhas[pilhaOrigem - 1].MostrarTopo().Virada)
+                        {
+                            pilhas[pilhaOrigem - 1].MostrarTopo().Virar();
+                        }
                     }
                     fundacoes[fundacaoDestino - 1].AdicionarCarta(cartaMovida);
                     return true;
@@ -179,9 +187,12 @@ namespace PP1_Paciência
                 if(cartaMovida.GetValor() == fundacoes[fundacaoDestino - 1].MostrarTopo().GetValor() + 1 && cartaMovida.GetNaipe() == fundacoes[fundacaoDestino - 1].MostrarTopo().GetNaipe())
                 {
                     pilhas[pilhaOrigem - 1].RemoverCarta();
-                    if (!pilhas[pilhaOrigem - 1].MostrarTopo().Virada && !pilhas[pilhaOrigem - 1].EstaVazia())
+                    if (!pilhas[pilhaOrigem - 1].EstaVazia())
                     {
-                        pilhas[pilhaOrigem - 1].MostrarTopo().Virar();
+                        if (!pilhas[pilhaOrigem - 1].MostrarTopo().Virada)
+                        {
+                            pilhas[pilhaOrigem - 1].MostrarTopo().Virar();
+                        }
                     }
                     fundacoes[fundacaoDestino - 1].AdicionarCarta(cartaMovida);
                     return true;
