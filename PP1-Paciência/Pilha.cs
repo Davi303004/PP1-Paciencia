@@ -36,10 +36,6 @@ namespace PP1_Paciência
                 throw new InvalidOperationException("A pilha está vazia.");
             Carta carta = cartas[cartas.Count - 1];
             cartas.RemoveAt(cartas.Count - 1);
-            if (cartas.Count > 0 && !cartas[cartas.Count - 1].Virada)
-            {
-                cartas[cartas.Count - 1].Virar();
-            }
             return carta;
         }
         public List<Carta> RemoverCarta(int range)
@@ -48,10 +44,6 @@ namespace PP1_Paciência
                 throw new ArgumentOutOfRangeException("Alcance de Cartas Inválido.");
             List<Carta> cartasRemovidas = cartas.GetRange(cartas.Count - range, range);
             cartas.RemoveRange(cartas.Count - range, range);
-            if (cartas.Count > 0 && !cartas[cartas.Count - 1].Virada)
-            {
-                cartas[cartas.Count - 1].Virar();
-            }
             return cartasRemovidas;
         }
         public bool EstaVazia()
@@ -71,11 +63,7 @@ namespace PP1_Paciência
             if (cartas.Count == 0)
             {
                 return null;
-            }   
-            if(cartas[cartas.Count - 1].Virada == false)
-            {
-                throw new InvalidOperationException("A carta não está virada.");
-            }
+            } 
             return cartas[cartas.Count - 1];
         }
     }
